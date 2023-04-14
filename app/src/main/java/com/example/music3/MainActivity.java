@@ -26,10 +26,7 @@ public class MainActivity extends BaseActivity {
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
         SharedPreferences.Editor editor = save.edit();
         editor.putBoolean("mus", false);
-        editor.putBoolean("musStart", false);
         editor.putInt("position", 0);
-        editor.putBoolean("i", true);
-        editor.putBoolean("musMemory", true);
         editor.apply();
     }
 }

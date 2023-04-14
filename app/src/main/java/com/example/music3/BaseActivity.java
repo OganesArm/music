@@ -35,29 +35,22 @@ public class BaseActivity extends AppCompatActivity {
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
         SharedPreferences.Editor editor = save.edit();
 
-        if (!save.getBoolean("musMemory", false)) {
-            musicSound = MediaPlayer.create(this, R.raw.music);
-            editor.putBoolean("musMemory", true);
-            editor.apply();
 
-        }
-        if (save.getBoolean("mus", false) & !save.getBoolean("musStart", false)){
-            editor.putBoolean("musStart", true);
+        if (save.getBoolean("mus", false) & !musicSound.isPlaying()){
+            int position = save.getInt("position", 0);
+            musicSound.start();
+            musicSound.seekTo(position);
+            musicSound.setLooping(true);
+            editor.putBoolean("mus", true);
             editor.apply();
-            if (!musicSound.isPlaying()) {
-                int position = save.getInt("position", 0);
-                musicSound.start();
-                musicSound.seekTo(position);
-                musicSound.setLooping(true);
-            }
         }
         if (!save.getBoolean("mus", false)){
+            musicSound.pause();
             int pos = musicSound.getCurrentPosition();
             editor.putInt("position", pos);
-            Log.d(TAG, String.valueOf(pos));
-            musicSound.pause();
             editor.apply();
         }
+
     }
 
     @Override
@@ -65,15 +58,13 @@ public class BaseActivity extends AppCompatActivity {
         super.onStop();
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
         SharedPreferences.Editor editor = save.edit();
-        editor.apply();
+
 
         if (!save.getBoolean("mus", false)){
+            musicSound.pause();
             int pos = musicSound.getCurrentPosition();
             editor.putInt("position", pos);
-            Log.d(TAG, String.valueOf(pos));
-            editor.putBoolean("musStart", false);
             editor.apply();
-            musicSound.pause();
         }
     }
 
@@ -85,20 +76,11 @@ public class BaseActivity extends AppCompatActivity {
         editor.putBoolean("mus", false);
         editor.apply();
     }
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
-        SharedPreferences.Editor editor = save.edit();
-        editor.putBoolean("musStart", false);
-        editor.putBoolean("musMemory", false);
-        editor.putBoolean("i", false);
-        editor.apply();
+
     }
 
 
