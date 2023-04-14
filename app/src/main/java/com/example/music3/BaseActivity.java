@@ -12,9 +12,12 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
+    private static final String TAG = "MyLog";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
 
     }
 
@@ -26,6 +29,7 @@ public class BaseActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = save.edit();
         editor.putBoolean("mus", true);
         editor.apply();
+        Log.d(TAG, "onStart");
 
     }
 
@@ -34,6 +38,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
         SharedPreferences.Editor editor = save.edit();
+        Log.d(TAG, "onResume");
 
 
         if (save.getBoolean("mus", false) & !musicSound.isPlaying()
@@ -46,12 +51,7 @@ public class BaseActivity extends AppCompatActivity {
             editor.putBoolean("mus", true);
             editor.apply();
         }
-        if (!save.getBoolean("mus", false) & !save.getBoolean("musStop", false)){
-            musicSound.pause();
-            int pos = musicSound.getCurrentPosition();
-            editor.putInt("position", pos);
-            editor.apply();
-        }
+
 
     }
 
@@ -60,6 +60,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onStop();
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
         SharedPreferences.Editor editor = save.edit();
+        Log.d(TAG, "onStop");
 
 
         if (!save.getBoolean("mus", false) & !save.getBoolean("musStop", false)){
@@ -73,6 +74,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
 
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
         SharedPreferences.Editor editor = save.edit();
@@ -81,10 +83,20 @@ public class BaseActivity extends AppCompatActivity {
             editor.apply();
         }
     }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
+        SharedPreferences.Editor editor = save.edit();
+        editor.putBoolean("mus", true);
+        editor.apply();
+        Log.d(TAG, "onRestart");
 
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
 
     }
 

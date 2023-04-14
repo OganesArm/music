@@ -22,4 +22,10 @@ public class MainActivity4 extends BaseActivity {
         Intent intent = new Intent(this, MainActivity2.class);
         startActivity(intent);
     }
+
+    // Кнопка назад на телефоне. Нужно назначать куда оно отправит всегда, инач баг.
+    public void onBackPressed(){
+        Intent intent = new Intent(this, MainActivity2.class);
+        startActivity(intent);
+    }
 }

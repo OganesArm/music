@@ -23,17 +23,20 @@ public class MainActivity2 extends BaseActivity {
         setContentView(R.layout.activity_main2);
         button=findViewById(R.id.button);
         switch1=findViewById(R.id.switch1);
+        switchCheck();
+        switchMethod();
+    }
+
+    // Проверка на положение кнопки музик
+    public void switchCheck(){
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
-        SharedPreferences.Editor editor = save.edit();
         if (save.getBoolean("switch", true)) {
             switch1.setChecked(true);
         } if (!save.getBoolean("switch", true)) {
             switch1.setChecked(false);
         }
-        switchMethod();
-
     }
-        // Проверка на положение кнопки музик
+    // отработка переключателя
     public void switchMethod() {
         switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
@@ -65,4 +68,11 @@ public class MainActivity2 extends BaseActivity {
         Intent intent = new Intent(this, MainActivity3.class);
         startActivity(intent);
     }
+
+    // Кнопка назад на телефоне. Нужно назначать куда оно отправит всегда, инач баг.
+    public void onBackPressed(){
+        Intent intent = new Intent(this, MainActivity2.class);
+        startActivity(intent);
+    }
+
 }
