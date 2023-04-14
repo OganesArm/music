@@ -36,6 +36,7 @@ public class MainActivity2 extends BaseActivity {
         // Проверка на положение кнопки музик
     public void switchMethod() {
         switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
             SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
             SharedPreferences.Editor editor = save.edit();
 
