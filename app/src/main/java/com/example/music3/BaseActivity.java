@@ -36,7 +36,9 @@ public class BaseActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = save.edit();
 
 
-        if (save.getBoolean("mus", false) & !musicSound.isPlaying()){
+        if (save.getBoolean("mus", false) & !musicSound.isPlaying()
+                & !save.getBoolean("musStop", false)){
+
             int position = save.getInt("position", 0);
             musicSound.start();
             musicSound.seekTo(position);
@@ -44,7 +46,7 @@ public class BaseActivity extends AppCompatActivity {
             editor.putBoolean("mus", true);
             editor.apply();
         }
-        if (!save.getBoolean("mus", false)){
+        if (!save.getBoolean("mus", false) & !save.getBoolean("musStop", false)){
             musicSound.pause();
             int pos = musicSound.getCurrentPosition();
             editor.putInt("position", pos);
@@ -60,7 +62,7 @@ public class BaseActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = save.edit();
 
 
-        if (!save.getBoolean("mus", false)){
+        if (!save.getBoolean("mus", false) & !save.getBoolean("musStop", false)){
             musicSound.pause();
             int pos = musicSound.getCurrentPosition();
             editor.putInt("position", pos);
@@ -71,10 +73,13 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
         SharedPreferences.Editor editor = save.edit();
-        editor.putBoolean("mus", false);
-        editor.apply();
+        if (!save.getBoolean("musStop", false)) {
+            editor.putBoolean("mus", false);
+            editor.apply();
+        }
     }
 
     @Override
