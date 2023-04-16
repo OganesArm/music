@@ -2,40 +2,40 @@ package com.example.music3;
 
 import static com.example.music3.MainActivity.musicSound;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class MainActivity2 extends BaseActivity {
     Button button;
-    Switch switch1;
+    SwitchMaterial switch1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        button=findViewById(R.id.button);
-        switch1=findViewById(R.id.switch1);
+        button = findViewById(R.id.button);
+        switch1 = findViewById(R.id.switch1);
         switchCheck();
         switchMethod();
     }
 
     // Проверка на положение кнопки музик
-    public void switchCheck(){
+    public void switchCheck() {
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
         if (save.getBoolean("switch", true)) {
             switch1.setChecked(true);
-        } if (!save.getBoolean("switch", true)) {
+        }
+        if (!save.getBoolean("switch", true)) {
             switch1.setChecked(false);
         }
     }
+
     // отработка переключателя
     public void switchMethod() {
         switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -70,9 +70,8 @@ public class MainActivity2 extends BaseActivity {
     }
 
     // Кнопка назад на телефоне. Нужно назначать куда оно отправит всегда, инач баг.
-    public void onBackPressed(){
+    public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity2.class);
         startActivity(intent);
     }
-
 }

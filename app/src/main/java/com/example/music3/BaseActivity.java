@@ -1,11 +1,9 @@
 package com.example.music3;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import static com.example.music3.MainActivity.musicSound;
 
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,9 +16,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
-
     }
-
 
     @Override
     protected void onStart() {
@@ -30,7 +26,6 @@ public class BaseActivity extends AppCompatActivity {
         editor.putBoolean("mus", true);
         editor.apply();
         Log.d(TAG, "onStart");
-
     }
 
     @Override
@@ -40,19 +35,32 @@ public class BaseActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = save.edit();
         Log.d(TAG, "onResume");
 
-
         if (save.getBoolean("mus", false) & !musicSound.isPlaying()
                 & !save.getBoolean("musStop", false)){
-
             int position = save.getInt("position", 0);
+
+                // постепенное увеличение громкости в течение 500 мсек
+            int duration = 500;
+            float volume = 0.1f;
+            float maxVolume = 1.0f;
+            float volumeStep = (maxVolume - volume) / duration;
+            float currentVolume = volume;
+            musicSound.setVolume(currentVolume, currentVolume);
             musicSound.start();
             musicSound.seekTo(position);
             musicSound.setLooping(true);
+            for (int i = 0; i < duration; i++) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                currentVolume += volumeStep;
+                musicSound.setVolume(currentVolume, currentVolume);
+            }
             editor.putBoolean("mus", true);
             editor.apply();
         }
-
-
     }
 
     @Override
@@ -61,7 +69,6 @@ public class BaseActivity extends AppCompatActivity {
         SharedPreferences save = getSharedPreferences("Save", MODE_PRIVATE);
         SharedPreferences.Editor editor = save.edit();
         Log.d(TAG, "onStop");
-
 
         if (!save.getBoolean("mus", false) & !save.getBoolean("musStop", false)){
             musicSound.pause();
@@ -83,6 +90,7 @@ public class BaseActivity extends AppCompatActivity {
             editor.apply();
         }
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -91,13 +99,12 @@ public class BaseActivity extends AppCompatActivity {
         editor.putBoolean("mus", true);
         editor.apply();
         Log.d(TAG, "onRestart");
-
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-
     }
 
 

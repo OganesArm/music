@@ -3,6 +3,7 @@ package com.example.music3;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,7 +17,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         musicSound = MediaPlayer.create(this, R.raw.music);
-
         Intent intent = new Intent(this, MainActivity2.class);
         startActivity(intent);
         nin();
